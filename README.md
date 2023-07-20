@@ -1,21 +1,21 @@
 # Doppelwuerfel
 Transposition cipher with two different keywords, also known as Doppelwürfel or UBCHI. With this little program you can decode and encode Strings.
 
-# Usage
+## Usage
 
-There are a total of four parameters that the programme can take. d/e for decode or encode, followed by the text and the keywords. Note: The programm removes all spaces and turns it into one with only lowercase letters.
+There are a total of four parameters that the program can take. d/e for decode or encode, followed by the text and the keywords. Note: The program removes all spaces and turns it into one with only lowercase letters.
 ```
 python3 doppelwuerfel.py <d/e> <text> <keyword1> <keyword2>
 ```
 
-## Encoding
+### Encoding
 If you want to encode the text "Lorem ipsum dolor sit" with the keywords "ct" and "magazine", the command would look like this:
 ```
 python3 doppelwuerfel.py e "Lorem ipsum dolor sit" ct magazine
 ```
 The chiffre would look like this "rotpi romed mlisl ous".
 
-## Decoding
+### Decoding
 If you want to decode "rotpi romed mlisl ous" with the same keywords "ct" and "magazine", the command would look like this:
 ```
 python3 doppelwuerfel.py d "rotpi romed mlisl ous" ct magazine
@@ -23,9 +23,7 @@ python3 doppelwuerfel.py d "rotpi romed mlisl ous" ct magazine
 The output is "loremipsumdolorsit" again.
 
 
-
-
-# Copyright
+## Copyright
 
 Copyright ©️ 2023 Wilhelm Drehling, Heise Medien GmbH & Co. KG
 
