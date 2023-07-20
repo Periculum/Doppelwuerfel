@@ -1,74 +1,98 @@
 #!/usr/bin/env python3
 from math import ceil
+import sys
 
-def printCipher(cipher):
-    # print text in Letterblocks of 5
-    return ' '.join(cipher[i:i + 5] for i in range(0, len(cipher), 5))
+class DoppelWuerfel:
+
+    def __init__(self, key1, key2):
+        self.key1 = key1
+        self.key2 = key2
 
 
-def encode(text, key):
-    # create two arrays of empty strings
-    length = len(key)
-    helper_text = [''] * length
+    def printCipher(self, cipher):
+        # print text in Letterblocks of 5
+        return ' '.join(cipher[i:i + 5] for i in range(0, len(cipher), 5))
 
-    # fill columns with the letters
-    for i in range(len(text)):
-        helper_text[i % length] += text[i]
 
-    # sort the key alphabeticaly and save its old index
-    sorted_key = sorted(enumerate(key), key=lambda x: x[1].lower())
+    def encode_step(self, text, key):
+        # create two arrays of empty strings
+        length = len(key)
+        helper_text = [''] * length
 
-    # sort the columns and create a cipher
-    cipher = ''
-    for i in range(length):
-        number = sorted_key[i][0]
-        cipher += helper_text[number]
+        # fill columns with the letters
+        for i in range(len(text)):
+            helper_text[i % length] += text[i]
 
-    return cipher
+        # sort the key alphabeticaly and save its old index
+        sorted_key = sorted(enumerate(key), key=lambda x: x[1].lower())
 
-def decode(text, key):
-    # create helper variables
-    key_length = len(key)
-    text_length = len(text)
-    col_max_len = ceil(text_length / key_length)
-    num_short_cols = text_length % key_length
+        # sort the columns and create a cipher
+        cipher = ''
+        for i in range(length):
+            number = sorted_key[i][0]
+            cipher += helper_text[number]
 
-    # sort the key and add the length of every column to the list
-    col_data = [(k[0], k[1], col_max_len if k[0] < num_short_cols else col_max_len-1) for k in enumerate(key)]
-    sorted_col_data = sorted(col_data, key=lambda x: x[1].lower())
+        return cipher
 
-    # create the columns and fill them with the letters. Empty fields are given the placeholder none
-    permuted = [None] * len(key)
-    src_idx = 0
-    for (idx, _, length) in sorted_col_data:
-        permuted[idx] = list(text[src_idx:src_idx+length]) + [None]*(col_max_len-length)
-        src_idx += length
+    def decode_step(self, text, key):
+        # create helper variables
+        key_length = len(key)
+        text_length = len(text)
+        col_max_len = ceil(text_length / key_length)
+        num_short_cols = text_length % key_length
 
-    # assemble the string
-    result = []
-    for col in zip(*permuted):
-        result += list(filter(lambda x: x is not None, col))
+        # sort the key and add the length of every column to the list
+        if num_short_cols == 0:
+            col_data = [(k[0], k[1], col_max_len) for k in enumerate(key)]
+        else:
+            col_data = [(k[0], k[1], col_max_len if k[0] < num_short_cols else col_max_len - 1) for k in enumerate(key)]
+        sorted_col_data = sorted(col_data, key=lambda x: x[1].lower())
 
-    return ''.join(result)
+        # create the columns and fill them with the letters. Empty fields are given the placeholder none
+        permuted = [None] * key_length
+        src_idx = 0
+        for (idx, _, length) in sorted_col_data:
+            permuted[idx] = list(text[src_idx:src_idx+length]) + [None] * (col_max_len - length)
+            src_idx += length
+
+        # assemble the string
+        result = []
+        for col in zip(*permuted):
+            result += list(filter(lambda x: x is not None, col))
+
+        return ''.join(result)
+
+
+    def decode(self, text):
+        puffer = self.decode_step(text, self.key2)
+        plain_text = self.decode_step(puffer, self.key1)
+        return plain_text
+
+    def encode(self, text):
+        puffer = self.encode_step(text, self.key1)
+        cipher = self.encode_step(puffer, self.key2)
+        return cipher
+
 
 
 def main():
-    # variables
-    text = "Loremipsumdolorsitametconsecteturadipisicielit"
-    key1 = "culpa"
-    key2 = "laborum"
+    # remove all spaces and use just lower case
+    text = sys.argv[2].lower()
+    text = text.replace(" ","")
 
-    # calling decode two times
-    puffer = encode(text, key1)
-    cipher = encode(puffer, key2)
+    # initialise the keywords
+    key1 = sys.argv[3]
+    key2 = sys.argv[4]
+    chiffre = DoppelWuerfel(key1, key2)
 
-    print(printCipher(cipher))
+    # decode or encode
+    if sys.argv[1] == 'd':
+        print(f'Plain Text: ', chiffre.decode(text))
+    elif sys.argv[1] == 'e':
+        print(f'Chiffre: ', chiffre.printCipher(chiffre.encode(text)))
+    else:
+        print('Please choose (d)ecode or (e)ncode')
 
-    # encode
-    puffer = decode(cipher, key2)
-    text = decode(puffer, key1)
-
-    print(text)
 
 if __name__ == "__main__":
     main()
