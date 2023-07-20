@@ -3,15 +3,27 @@ Transposition cipher with two different keywords, also known as Doppelwürfel or
 
 # Usage
 
-There are a total of four parameters that the programme can take. d/e for decode or encode, followed by the text and the keywords.
+There are a total of four parameters that the programme can take. d/e for decode or encode, followed by the text and the keywords. Note: The programm removes all spaces and turns it into one with only lowercase letters.
 ```
 python3 doppelwuerfel.py <d/e> <text> <keyword1> <keyword2>
 ```
 
-If you want to encode the text "loremipsum" with the keywords "ct" and "magazine", the command would look like this:
+## Encoding
+If you want to encode the text "Lorem ipsum dolor sit" with the keywords "ct" and "magazine", the command would look like this:
 ```
-python3 doppelwuerfel.py e loremipsum ct magazine
+python3 doppelwuerfel.py e "Lorem ipsum dolor sit" ct magazine
 ```
+The chiffre would look like this "rotpi romed mlisl ous".
+
+## Decoding
+If you want to decode "rotpi romed mlisl ous" with the same keywords "ct" and "magazine", the command would look like this:
+```
+python3 doppelwuerfel.py d "rotpi romed mlisl ous" ct magazine
+```
+The output is "loremipsumdolorsit" again.
+
+
+
 
 # Copyright
 
