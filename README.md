@@ -1,4 +1,4 @@
-# Doppelwuerfel
+# Doppelwürfel
 Transposition cipher with two different keywords, also known as Doppelwürfel or UBCHI. With this little program you can decode and encode Strings.
 
 ## Usage
