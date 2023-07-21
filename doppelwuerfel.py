@@ -17,20 +17,20 @@ class DoppelWuerfel:
     def encode_step(self, text, key):
         # create two arrays of empty strings
         length = len(key)
-        helper_text = [''] * length
+        transposed = [''] * length
 
         # fill columns with the letters
         for i in range(len(text)):
-            helper_text[i % length] += text[i]
+            transposed[i % length] += text[i]
 
         # sort the key alphabeticaly and save its old index
-        sorted_key = sorted(enumerate(key), key=lambda x: x[1].lower())
+        sorted_col_data = sorted(enumerate(key), key=lambda x: x[1].lower())
 
         # sort the columns and create a cipher
         cipher = ''
         for i in range(length):
-            number = sorted_key[i][0]
-            cipher += helper_text[number]
+            number = sorted_col_data[i][0]
+            cipher += transposed[number]
 
         return cipher
 
