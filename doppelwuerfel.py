@@ -39,13 +39,10 @@ class DoppelWuerfel:
         key_length = len(key)
         text_length = len(text)
         col_max_len = ceil(text_length / key_length)
-        num_short_cols = text_length % key_length
+        num_long_cols = text_length % key_length
 
         # sort the key and add the length of every column to the list
-        if num_short_cols == 0:
-            col_data = [(k[0], k[1], col_max_len) for k in enumerate(key)]
-        else:
-            col_data = [(k[0], k[1], col_max_len if k[0] < num_short_cols else col_max_len - 1) for k in enumerate(key)]
+        col_data = [(k[0], k[1], col_max_len if k[0] < num_long_cols or num_long_cols == 0 else col_max_len - 1) for k in enumerate(key)]
         sorted_col_data = sorted(col_data, key=lambda x: x[1].lower())
 
         # create the columns and fill them with the letters. Empty fields are given the placeholder none
