@@ -15,11 +15,11 @@ class DoppelWuerfel:
 
 
     def encode_step(self, text, key):
-        # create two arrays of empty strings
+        # Variables
         length = len(key)
         transposed = [''] * length
 
-        # fill columns with the letters
+        # fill columns with letters
         for i in range(len(text)):
             transposed[i % length] += text[i]
 
