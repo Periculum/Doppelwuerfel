@@ -13,7 +13,7 @@ If you want to encode the text "Lorem ipsum dolor sit" with the keywords "ct" an
 ```
 python3 doppelwuerfel.py e "Lorem ipsum dolor sit" ct magazine
 ```
-The chiffre would look like this "rotpi romed mlisl ous".
+It will return "rotpi romed mlisl ous".
 
 ### Decoding
 If you want to decode "rotpi romed mlisl ous" with the same keywords "ct" and "magazine", the command would look like this:
