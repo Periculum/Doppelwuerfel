@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from math import ceil
+from argparse import ArgumentParser
 import sys
 
 class DoppelWuerfel:
@@ -28,8 +29,7 @@ class DoppelWuerfel:
 
         # sort the columns and create a cipher
         cipher = ''
-        for i in range(length):
-            number = sorted_col_data[i][0]
+        for number, _ in sorted_col_data:
             cipher += transposed[number]
 
         return cipher
@@ -42,7 +42,7 @@ class DoppelWuerfel:
         num_long_cols = text_length % key_length
 
         # sort the key and add the length of every column to the list
-        col_data = [(k[0], k[1], col_max_len if k[0] < num_long_cols or num_long_cols == 0 else col_max_len - 1) for k in enumerate(key)]
+        col_data = [(char_no, key_char, col_max_len if char_no < num_long_cols or num_long_cols == 0 else col_max_len - 1) for char_no, key_char in enumerate(key)]
         sorted_col_data = sorted(col_data, key=lambda x: x[1].lower())
 
         # create the columns and fill them with the letters. Empty fields are given the placeholder none
@@ -61,34 +61,36 @@ class DoppelWuerfel:
 
 
     def decode(self, text):
-        puffer = self.decode_step(text, self.key2)
-        plain_text = self.decode_step(puffer, self.key1)
+        helper = self.decode_step(text, self.key2)
+        plain_text = self.decode_step(helper, self.key1)
         return plain_text
 
     def encode(self, text):
-        puffer = self.encode_step(text, self.key1)
-        cipher = self.encode_step(puffer, self.key2)
+        helper = self.encode_step(text, self.key1)
+        cipher = self.encode_step(helper, self.key2)
         return cipher
 
 
 
 def main():
-    # remove all spaces and use just lower case
-    text = sys.argv[2].lower()
-    text = text.replace(" ","")
+    # parsing arguments
+    parser = ArgumentParser(prog='Doppelwürfel', description='Anagrammisierte Verschlüsselung')
+    parser.add_argument('operation', choices=['e', 'd'])
+    parser.add_argument('text', help="Use \" around the text if you want to enter with spaces.")
+    parser.add_argument('key1')
+    parser.add_argument('key2')
+    args = parser.parse_args()
 
+    # remove all spaces and use just lower case
+    text = args.text.lower().replace(" ","")
     # initialise the keywords
-    key1 = sys.argv[3]
-    key2 = sys.argv[4]
-    chiffre = DoppelWuerfel(key1, key2)
+    chiffre = DoppelWuerfel(args.key1, args.key2)
 
     # decode or encode
-    if sys.argv[1] == 'd':
+    if args.operation == 'd':
         print(f'Plain Text: ', chiffre.decode(text))
-    elif sys.argv[1] == 'e':
-        print(f'Chiffre: ', chiffre.printCipher(chiffre.encode(text)))
     else:
-        print('Please choose (d)ecode or (e)ncode')
+        print(f'Chiffre: ', chiffre.printCipher(chiffre.encode(text)))
 
 
 if __name__ == "__main__":
