@@ -1,5 +1,7 @@
 # Doppelwürfel
-Transposition cipher with two different keywords, also known as Doppelwürfel or UBCHI. With this little program you can decode and encode Strings.
+Transposition cipher with two different keywords, also known as [Doppelwürfel or UBCHI](https://en.wikipedia.org/wiki/Transposition_cipher#Double_transposition). With this little program you can decode and encode Strings.
+
+An article on this cipher appeared in the german c't-magazin 22/2023 p.128. An online version can be found on [heise online](https://www.heise.de/hintergrund/Programmieren-mit-Python-Doppelwuerfel-Verschluesselung-verstehen-und-umsetzen-9279040.html) behind the PayWall.
 
 ## Usage
 
